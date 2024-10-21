@@ -1,0 +1,15 @@
+apiVersion: pluto.dev.io/v1alpha1
+kind: Microservice
+metadata:
+  name: nginx-ms
+spec:
+  labels:
+    app: microservice-sample
+    env: dev
+  replicas: 1
+  image: nginx
+  env:
+    - name: ENV
+      value: test
+    - name: LOG_LEVEL
+      value: debug

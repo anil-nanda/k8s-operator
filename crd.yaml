@@ -1,0 +1,59 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: microservices.pluto.dev.io
+spec:
+  group: pluto.dev.io
+  scope: Namespaced
+  names:
+    plural: microservices
+    singular: microservice
+    kind: Microservice
+    shortNames:
+    - ms
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              replicas:
+                type: integer
+                minimum: 1
+              image:
+                type: string
+              labels:
+                type: object
+                additionalProperties:
+                  type: string
+              env:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    value:
+                      type: string
+            required:
+            - replicas
+            - image
+          status:
+            type: object
+            properties:
+              ready:
+                type: string
+    additionalPrinterColumns:
+    - name: Replicas
+      type: integer
+      description: Number of replicas for the microservice
+      jsonPath: .spec.replicas
+    - name: Image
+      type: string
+      description: Image used for the microservice
+      jsonPath: .spec.image
